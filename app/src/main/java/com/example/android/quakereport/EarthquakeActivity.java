@@ -31,19 +31,21 @@ public class EarthquakeActivity extends AppCompatActivity {
         setContentView(R.layout.earthquake_activity);
 
         // Create a fake list of earthquake locations.
-        ArrayList<Earthquake> earthquakes = new ArrayList<>();
-        earthquakes.add(new Earthquake("1.1", "San Francisco", "2013.2.2"));
-        earthquakes.add(new Earthquake("1.1", "London", "2013.2.3"));
-        earthquakes.add(new Earthquake("1.1", "Tokyo", "2013.2.4"));
-        earthquakes.add(new Earthquake("1.1", "Mexico City", "2013.2.5"));
-        earthquakes.add(new Earthquake("1.1", "Moscow", "2013.2.5"));
-        earthquakes.add(new Earthquake("1.1", "Rio de Janeiro", "2013.2.6"));
-        earthquakes.add(new Earthquake("1.1", "Paris", "2013.2.7"));
+//        ArrayList<Earthquake> earthquakes = new ArrayList<>();
+//        earthquakes.add(new Earthquake("1.1", "San Francisco", "2013.2.2"));
+//        earthquakes.add(new Earthquake("1.1", "London", "2013.2.3"));
+//        earthquakes.add(new Earthquake("1.1", "Tokyo", "2013.2.4"));
+//        earthquakes.add(new Earthquake("1.1", "Mexico City", "2013.2.5"));
+//        earthquakes.add(new Earthquake("1.1", "Moscow", "2013.2.5"));
+//        earthquakes.add(new Earthquake("1.1", "Rio de Janeiro", "2013.2.6"));
+//        earthquakes.add(new Earthquake("1.1", "Paris", "2013.2.7"));
+
+        // get the list of earthquake form {@link QueryUtils}
+        ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
 
 
 
-
-        // Create a new {@link EarthquakeAdapter} of earthquakes
+                // Create a new {@link EarthquakeAdapter} of earthquakes
         EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakes);
 
 
