@@ -15,16 +15,24 @@
  */
 package com.example.android.quakereport;
 
-import android.os.AsyncTask;
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+
+    /**
+     * Constant value for the earthquake loader ID. We can choose any integer.
+     * This really only comes into play if you're using multiple loaders.
+     */
+    private static final int EARTHQUAKE_LOADER_ID = 1;
 
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
@@ -50,9 +58,39 @@ public class EarthquakeActivity extends AppCompatActivity {
         //ArrayList<Earthquake> earthquakes = QueryUtils.extractFeatureFromJson();
 
 
-        new EarthquakeAsyncTask().execute(USGS_REQUEST_URL);
+        //new EarthquakeAsyncTask().execute(USGS_REQUEST_URL);
+
+        // Loader
+        getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
 
     }
+
+    @Override
+    public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+        return new EarthquakeLoader(this, USGS_REQUEST_URL);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+
+        // If there is no result, do nothing.
+        if (earthquakes == null) {
+            return;
+        }
+
+        // Update the information displayed to the user.
+        updateUi(earthquakes);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        updateUi(new ArrayList<Earthquake>());
+
+    }
+
+
+
 
     /**
      * Update the UI with the given earthquake information.
@@ -67,31 +105,5 @@ public class EarthquakeActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    // AsyncTask
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
-        @Override
-        protected void onPostExecute(List<Earthquake> earthquakes) {
-            // If there is no result, do nothing.
-            if (earthquakes == null) {
-                return;
-            }
 
-            // Update the information displayed to the user.
-            super.onPostExecute(earthquakes);
-            updateUi(earthquakes);
-
-        }
-
-        @Override
-        protected List<Earthquake> doInBackground(String... urls) {
-            // Don't perform the request if there are no URLs, or the first URL is null.
-            if (urls.length < 1 || urls[0] == null) {
-                return null;
-            }
-
-            // Perform the HTTP request for earthquake data and process the response.
-            List<Earthquake> earthquakes = Utils.fetchEarthquakeData(urls[0]);
-            return earthquakes;
-        }
-    }
 }
