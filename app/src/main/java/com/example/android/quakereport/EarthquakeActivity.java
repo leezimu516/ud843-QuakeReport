@@ -19,6 +19,7 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -41,38 +42,27 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "TEST: onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create a fake list of earthquake locations.
-//        ArrayList<Earthquake> earthquakes = new ArrayList<>();
-//        earthquakes.add(new Earthquake("1.1", "San Francisco", "2013.2.2"));
-//        earthquakes.add(new Earthquake("1.1", "London", "2013.2.3"));
-//        earthquakes.add(new Earthquake("1.1", "Tokyo", "2013.2.4"));
-//        earthquakes.add(new Earthquake("1.1", "Mexico City", "2013.2.5"));
-//        earthquakes.add(new Earthquake("1.1", "Moscow", "2013.2.5"));
-//        earthquakes.add(new Earthquake("1.1", "Rio de Janeiro", "2013.2.6"));
-//        earthquakes.add(new Earthquake("1.1", "Paris", "2013.2.7"));
-
-        // get the list of earthquake form {@link QueryUtils}
-        //ArrayList<Earthquake> earthquakes = QueryUtils.extractFeatureFromJson();
-
-
-        //new EarthquakeAsyncTask().execute(USGS_REQUEST_URL);
 
         // Loader
         getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        Log.d(LOG_TAG, "TEST: initLoader");
 
     }
 
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "TEST: onCreateLoader");
         return new EarthquakeLoader(this, USGS_REQUEST_URL);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
 
+        Log.d(LOG_TAG, "TEST: onLoadFinished");
         // If there is no result, do nothing.
         if (earthquakes == null) {
             return;
@@ -85,6 +75,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        Log.d(LOG_TAG, "TEST: onLoaderReset");
         updateUi(new ArrayList<Earthquake>());
 
     }
