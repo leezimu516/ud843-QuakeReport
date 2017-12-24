@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +41,18 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&" +
             "eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
+    /** TextView that is displayed when the list is empty */
+    private TextView mEmptyStateTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "TEST: onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
+        ListView earthquakeListView = (ListView)findViewById(R.id.list);
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_textView);
+        earthquakeListView.setEmptyView(mEmptyStateTextView);
 
         // Loader
         getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
@@ -63,13 +70,17 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
 
         Log.d(LOG_TAG, "TEST: onLoadFinished");
+
+        // Set empty state text to display "No earthquakes found."
+        mEmptyStateTextView.setText(R.string.no_earthquakes);
+
         // If there is no result, do nothing.
         if (earthquakes == null) {
             return;
         }
 
         // Update the information displayed to the user.
-        updateUi(earthquakes);
+        //updateUi(earthquakes);
 
     }
 
