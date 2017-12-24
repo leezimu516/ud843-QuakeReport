@@ -20,7 +20,9 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -44,6 +46,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
 
+    private ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "TEST: onCreate");
@@ -53,6 +57,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         ListView earthquakeListView = (ListView)findViewById(R.id.list);
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_textView);
         earthquakeListView.setEmptyView(mEmptyStateTextView);
+
+        mProgressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
         // Loader
         getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
@@ -80,7 +86,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         }
 
         // Update the information displayed to the user.
-        //updateUi(earthquakes);
+        updateUi(earthquakes);
+        mProgressBar.setVisibility(View.GONE);
 
     }
 

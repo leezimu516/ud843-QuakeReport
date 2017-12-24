@@ -150,6 +150,13 @@ public final class Utils {
 			return null;
 		}
 
+		// test the progress bar
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		try {
 			JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
 			JSONArray earthquakeJsonArray = baseJsonResponse.getJSONArray("features");
